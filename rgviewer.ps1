@@ -1,3 +1,17 @@
+function CheckPropertiesByType {
+    param (
+        $propertyType
+    )
+
+    "******************** Checking {$propertyType} **********************"
+    $buffer = Get-AzResource -ResourceType $propertyType | Format-List
+    if ($null -eq $buffer) {
+        "ANY RESOURCE OF THIS TYPE WAS FOUND..."
+    }
+    Write-Output $buffer
+}
+
+
 Clear-Host
 
 Disconnect-AzAccount | Out-Null; #Clear all sesions in Az to avoid unexpected behavior
@@ -24,7 +38,7 @@ else {
     Get-AzResourceGroup | Sort-Object ResourceGroupName | Format-Table ResourceGroupName, Location, ProvisioningState, Tags;
     Write-Output "******************************************************************"
 }
-$rgchoose = Read-Host "Write the name of the desired resource group and press ENTER: "
+$rgchoose = Read-Host "Write the name of the desired resource group and press ENTER"
 
 $resources = Get-AzResource -ResourceGroupName $rgchoose | Format-Table;
 if ( $null -eq $resources ) {
@@ -93,30 +107,9 @@ while ( $stay -eq 0 ) {
 
             $rtopt = Read-Host "Choose the desired option and press ENTER"
             switch ($rtopt) {
-                1 {
-                    "******************** Checking Microsoft.Web/serverFarms **********************"
-                    $buffer = Get-AzResource -ResourceType Microsoft.Web/serverFarms | Format-List
-                    if ($null -eq $buffer) {
-                        "ANY RESOURCE OF THIS TYPE WAS FOUND..."
-                    }
-                    Write-Output $buffer
-                }
-                2 {
-                    "******************** Checking Microsoft.Web/sites **********************" 
-                    $buffer = Get-AzResource -ResourceType Microsoft.Web/sites | Format-List
-                    if ($null -eq $buffer) {
-                        "ANY RESOURCE OF THIS TYPE WAS FOUND..."
-                    }
-                    Write-Output $buffer
-                }
-                3 {
-                    "******************** Checking Microsoft.VSOnline **********************"
-                    $buffer = Get-AzResource -ResourceType Microsoft.VSOnline | Format-List
-                    if ($null -eq $buffer) {
-                        "ANY RESOURCE OF THIS TYPE WAS FOUND..."
-                    }
-                    Write-Output $buffer
-                }
+                1 { CheckPropertiesByType -propertyType Microsoft.Web/serverFarms }
+                2 { CheckPropertiesByType -propertyType Microsoft.Web/sites }
+                3 { CheckPropertiesByType -propertyType Microsoft.Web/VSOnline }
                 4 {
                     # Do Nothing
                 }
@@ -139,3 +132,4 @@ while ( $stay -eq 0 ) {
         }
     }
 }
+
