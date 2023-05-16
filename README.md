@@ -27,5 +27,5 @@ Set-ExecutionPolicy -ExecutionPolicy ByPass -Scope CurrentUser
 4. Follow the instructions of the script.
 
 ### Known Issues
-- Sometimes, the Azure Web Authentication will not work the first time if you have activated the 2-factor auth (In the second auth, the script will work normally)
+- Sometimes, the Azure Web Authentication will not work the first time if you have activated the 2-factor auth (In the second try, the script will work normally)
 - The tag function could not work sometimes tagging service plans (Microsoft.Web/serverFarms), this problem will occur also in the web version of the Azure Resource Manager (Azure Portal)
